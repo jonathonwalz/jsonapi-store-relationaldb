@@ -41,7 +41,7 @@ jsonApi.define({
 
 **Note:** the `logging` property controls the logging of the emitted SQL and can either be `false` (which will mean it will be captured by the internal debugging module under the namespace `jsonApi:store:relationaldb:sequelize`) or a user provided function (e.g. `console.log`) to which a string containing the information to be logged will be passed as the first argument.
 
-#### Alternative Usage - Provide Sequelize instance
+#### Alternative Usages - Provide Sequelize instance or model
 
 If you are already using sequelize or need to have access to the sequelize instance, you may provide an instance to the store to be used instead of having the store create a new instance from the given config.
 
@@ -55,6 +55,22 @@ jsonApi.define({
   resource: "comments",
   handlers: new RelationalDbStore({
     sequelize: sequelize
+  })
+});
+```
+
+Alternatively, you may instead provide a base model that has already been defined for Sequelize:
+
+```javascript
+var RelationalDbStore = require("jsonapi-store-relationaldb");
+var Sequelize = require("Sequelize");
+
+var sequelize = new Sequelize("jsonapi", "root", null, {dialect: "mysql"}));
+
+jsonApi.define({
+  resource: "comments",
+  handlers: new RelationalDbStore({
+    baseModel: sequelize.define(...)
   })
 });
 ```
